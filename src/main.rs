@@ -1,6 +1,9 @@
 use coogle_rs::collector::FunctionSignature;
-use coogle_rs::matcher::*;
-use coogle_rs::{collector::parse_file, matcher::fuzzy_match};
+use coogle_rs::{
+    collector::parse_file,
+    matcher::{fuzzy_match, Token},
+};
+// use std::fs::{self, File};
 use std::io::{self, BufRead};
 
 fn main() {
