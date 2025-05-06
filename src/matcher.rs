@@ -1,8 +1,6 @@
 use crate::collector::FunctionSignature;
 use strsim::jaro_winkler;
 
-// const FUZZY_THRESHOLD: f64 = 0.70;
-
 pub enum Token {
     Identifier(String),
     LeftParen,
@@ -39,7 +37,7 @@ impl Token {
 }
 
 impl FunctionSignature {
-    pub fn from_tokens(tokens: Vec<Token>) -> Self {
+    pub fn from_tokens(tokens: Vec<Token>) -> Result<Self, String> {
         let mut return_type = String::new();
         let mut params = Vec::new();
         let is_variadic = false;
@@ -63,11 +61,11 @@ impl FunctionSignature {
                 Token::Comma => {}
             }
         }
-        FunctionSignature {
+        Ok(FunctionSignature {
             return_type,
             params,
             is_variadic,
-        }
+        })
     }
 }
 

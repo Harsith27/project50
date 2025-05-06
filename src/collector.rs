@@ -96,7 +96,7 @@ extern "C" fn get_funcs(
     return CXChildVisit_Continue;
 }
 
-pub fn parse_file(file_name: String) -> Option<Vec<Function>> {
+pub fn parse_file(file_name: String) -> Result<Vec<Function>, String> {
     let src_file = CString::new(file_name).unwrap();
     let index = unsafe { clang_createIndex(0, 0) };
     let mut tu = std::ptr::null_mut();
@@ -114,7 +114,7 @@ pub fn parse_file(file_name: String) -> Option<Vec<Function>> {
     };
     if err != CXError_Success {
         println!("Error: {}", err);
-        return None;
+        return Err(format!("Failed to parse {src_file:?} with Error: {err}"));
     }
 
     let num_diags = unsafe { clang_getNumDiagnostics(tu) };
@@ -142,5 +142,5 @@ pub fn parse_file(file_name: String) -> Option<Vec<Function>> {
         );
     }
 
-    Some(funcs)
+    Ok(funcs)
 }
